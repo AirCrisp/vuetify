@@ -87,7 +87,7 @@ test('VListGroup.js', ({ mount }) => {
       }
     })
 
-    const header = wrapper.find('.list__group__header__prepend-icon')[0]
+    const header = wrapper.find('.v-list__group__header__prepend-icon')[0]
 
     expect(header.hasClass('foo')).toBe(true)
     wrapper.setProps({ activeClass: 'bar' })
@@ -193,7 +193,7 @@ test('VListGroup.js', ({ mount }) => {
       }
     })
 
-    const icon = wrapper.find('.icon')[0]
+    const icon = wrapper.find('.v-icon')[0]
 
     expect(icon.text()).toBe('arrow_drop_down')
 
@@ -201,7 +201,7 @@ test('VListGroup.js', ({ mount }) => {
     expect(warning).toHaveBeenTipped()
   })
 
-  it('should return proper content from icon methods', () => {
+  it('should return proper content from icon methods', async () => {
     const wrapper = mount(VListGroup)
 
     expect(wrapper.vm.genPrependIcon()).toBe(null)
@@ -211,11 +211,11 @@ test('VListGroup.js', ({ mount }) => {
     expect(wrapper.vm.genPrependIcon()).toBeTruthy()
     wrapper.setProps({ prependIcon: undefined })
 
-    const icon = wrapper.find('.icon')[0]
+    const icon = wrapper.find('.v-icon')[0]
 
     expect(icon.text()).toBe('keyboard_arrow_down')
     wrapper.setProps({ appendIcon: 'list' })
-
+    await wrapper.vm.$nextTick()
     expect(icon.text()).toBe('list')
     expect('Injection "listClick" not found').toHaveBeenWarned()
     expect(warning).toHaveBeenTipped()

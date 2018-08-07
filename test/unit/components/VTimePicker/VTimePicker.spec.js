@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import { test } from '@/test'
-import VTimePicker from '@/components/VTimePicker'
-import VMenu from '@/components/VMenu'
+import VTimePicker from '@/components/VTimePicker/VTimePicker'
 
 test('VTimePicker.js', ({ mount }) => {
   it('should accept a value', async () => {
@@ -38,7 +37,7 @@ test('VTimePicker.js', ({ mount }) => {
       }
     })
 
-    expect(wrapper.find('.picker__title')).toHaveLength(0)
+    expect(wrapper.find('.v-picker__title')).toHaveLength(0)
   })
 
   it('should accept a date object for a value', async () => {
@@ -116,6 +115,17 @@ test('VTimePicker.js', ({ mount }) => {
         value: '09:00:00',
         color: 'primary',
         headerColor: 'orange darken-1'
+      }
+    })
+
+    await wrapper.vm.$nextTick()
+    expect(wrapper.html()).toMatchSnapshot()
+  })
+
+  it('should render dark time picker', async () => {
+    const wrapper = mount(VTimePicker, {
+      propsData: {
+        dark: true
       }
     })
 
@@ -215,7 +225,7 @@ test('VTimePicker.js', ({ mount }) => {
     clock.$emit('change')
     expect(wrapper.vm.selectingHour).toBe(false)
     clock.$emit('change')
-    expect(wrapper.vm.selectingHour).toBe(true)
+    expect(wrapper.vm.selectingHour).toBe(false)
   })
 
   it('should change selectingHour when clicked in title', () => {
@@ -269,7 +279,7 @@ test('VTimePicker.js', ({ mount }) => {
     })
 
     const wrapper = mount(component)
-    expect(wrapper.find('.picker__actions .scoped-slot')).toHaveLength(1)
+    expect(wrapper.find('.v-picker__actions .scoped-slot')).toHaveLength(1)
   })
 
   it('should calculate allowed minute/hour callback', async () => {

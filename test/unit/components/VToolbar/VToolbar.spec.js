@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import { test, resizeWindow } from '@/test'
-import VApp from '@/components/VApp'
-import VToolbar from '@/components/VToolbar'
+import VApp from '@/components/VApp/VApp'
+import VToolbar from '@/components/VToolbar/VToolbar'
 
 const scrollWindow = y => {
   global.pageYOffset = y
@@ -9,6 +9,8 @@ const scrollWindow = y => {
 
   return new Promise(resolve => setTimeout(resolve, 200))
 }
+
+const deprecateScrollToolbarOffScreen = `'scrollToolbarOffScreen' is deprecated, use 'scrollOffScreen' instead`
 
 test('VToolbar.vue', ({ mount }) => {
   it('should render a colored toolbar', () => {
@@ -126,10 +128,10 @@ test('VToolbar.vue', ({ mount }) => {
     })
     Vue.set(wrapper.vm.$vuetify.breakpoint, 'width', 200)
     Vue.set(wrapper.vm.$vuetify.breakpoint, 'height', 100)
-    expect(wrapper.vm.computedContentHeight).toBe(wrapper.vm.heights.mobileLandscape)
+    expect(wrapper.vm.computedContentHeight).toBe(wrapper.vm.heights.desktop)
     Vue.set(wrapper.vm.$vuetify.breakpoint, 'width', 100)
     Vue.set(wrapper.vm.$vuetify.breakpoint, 'height', 200)
-    expect(wrapper.vm.computedContentHeight).toBe(wrapper.vm.heights.mobile)
+    expect(wrapper.vm.computedContentHeight).toBe(wrapper.vm.heights.desktop)
   })
 
   it('should set margin top', () => {
@@ -209,5 +211,47 @@ test('VToolbar.vue', ({ mount }) => {
     wrapper.setProps({ scrollToolbarOffScreen: true })
 
     expect(wrapper.vm.computedTransform).toBe(-56)
+    expect(deprecateScrollToolbarOffScreen).toHaveBeenTipped()
+  })
+
+  it('should have a custom extension height', () => {
+    const wrapper = mount(VToolbar, {
+      propsData: { tabs: true }
+    })
+
+    expect(wrapper.vm.computedExtensionHeight).toBe(48)
+  })
+
+  it('should scroll off screen', async () => {
+    const wrapper = mount(VToolbar, {
+      attachToDocument: true,
+      propsData: { scrollOffScreen: true }
+    })
+
+    expect(wrapper.vm.isActive).toBe(true)
+
+    await scrollWindow(100)
+
+    expect(wrapper.vm.currentScroll).toBe(100)
+
+    await scrollWindow(500)
+
+    expect(wrapper.vm.currentScroll).toBe(500)
+    expect(wrapper.vm.isActive).toBe(false)
+
+    await scrollWindow(0)
+
+    expect(wrapper.vm.isScrollingUp).toBe(true)
+    expect(wrapper.vm.isActive).toBe(true)
+
+    wrapper.setProps({ invertedScroll: true })
+
+    await wrapper.vm.$nextTick()
+
+    expect(wrapper.vm.isActive).toBe(false)
+
+    await scrollWindow(500)
+
+    expect(wrapper.vm.isActive).toBe(true)
   })
 })

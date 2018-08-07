@@ -1,5 +1,5 @@
 import { test } from '@/test'
-import VCard from '@/components/VCard'
+import VCard from '@/components/VCard/VCard'
 
 test('VCard.vue', ({ mount }) => {
   it('should render component and match snapshot', () => {
@@ -83,7 +83,7 @@ test('VCard.vue', ({ mount }) => {
       }
     })
 
-    expect(wrapper.hasClass('card--tile')).toBe(true)
+    expect(wrapper.hasClass('v-card--tile')).toBe(true)
     expect(wrapper.html()).toMatchSnapshot()
   })
 })

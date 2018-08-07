@@ -1,7 +1,5 @@
-import Vue from 'vue'
 import { test } from '@/test'
-import VDatePicker from '@/components/VDatePicker'
-import VMenu from '@/components/VMenu'
+import VDatePicker from '@/components/VDatePicker/VDatePicker'
 
 test('VDatePicker.js', ({ mount, compileToFunctions }) => {
   it('should emit input event on year click (reactive picker)', async () => {
@@ -22,7 +20,7 @@ test('VDatePicker.js', ({ mount, compileToFunctions }) => {
     const change = jest.fn()
     wrapper.vm.$on('change', input);
 
-    wrapper.find('.date-picker-years li.active + li')[0].trigger('click')
+    wrapper.find('.v-date-picker-years li.active + li')[0].trigger('click')
     expect(input).toBeCalledWith('2012-05')
     expect(change).not.toBeCalled()
   })
@@ -41,7 +39,7 @@ test('VDatePicker.js', ({ mount, compileToFunctions }) => {
     })
 
     wrapper.vm.$on('input', cb);
-    wrapper.find('.date-picker-years li.active + li')[0].trigger('click')
+    wrapper.find('.v-date-picker-years li.active + li')[0].trigger('click')
     expect(cb).not.toBeCalled()
   })
 
@@ -55,7 +53,7 @@ test('VDatePicker.js', ({ mount, compileToFunctions }) => {
     })
 
     wrapper.vm.$on('input', cb);
-    wrapper.find('.date-picker-table--month button')[0].trigger('click')
+    wrapper.find('.v-date-picker-table--month button')[0].trigger('click')
     expect(cb).toBeCalledWith('2013-01')
   })
 
@@ -68,7 +66,7 @@ test('VDatePicker.js', ({ mount, compileToFunctions }) => {
       }
     })
 
-    wrapper.find('.date-picker-table--month')[0].trigger('wheel')
+    wrapper.find('.v-date-picker-table--month')[0].trigger('wheel')
     await wrapper.vm.$nextTick()
     expect(wrapper.vm.tableDate).toBe('2014')
   })
@@ -93,7 +91,7 @@ test('VDatePicker.js', ({ mount, compileToFunctions }) => {
       }
     })
 
-    expect(wrapper.find('.date-picker-table--month tbody')[0].html()).toMatchSnapshot()
+    expect(wrapper.find('.v-date-picker-table--month tbody')[0].html()).toMatchSnapshot()
   })
 
   it('should match snapshot with month formatting functions', () => {
@@ -105,7 +103,7 @@ test('VDatePicker.js', ({ mount, compileToFunctions }) => {
       }
     })
 
-    expect(wrapper.find('.date-picker-table--month tbody')[0].html()).toMatchSnapshot()
+    expect(wrapper.find('.v-date-picker-table--month tbody')[0].html()).toMatchSnapshot()
   })
 
   it('should match snapshot with colored picker', () => {
@@ -141,7 +139,7 @@ test('VDatePicker.js', ({ mount, compileToFunctions }) => {
       }
     })
 
-    const [leftButton, rightButton] = wrapper.find('.date-picker-header button')
+    const [leftButton, rightButton] = wrapper.find('.v-date-picker-header button')
 
     leftButton.trigger('click')
     expect(wrapper.vm.tableDate).toBe('2004')
@@ -158,7 +156,7 @@ test('VDatePicker.js', ({ mount, compileToFunctions }) => {
       }
     })
 
-    const button = wrapper.find('.date-picker-header strong')[0]
+    const button = wrapper.find('.v-date-picker-header strong')[0]
 
     button.trigger('click')
     expect(wrapper.vm.activePicker).toBe('YEAR')
@@ -175,7 +173,7 @@ test('VDatePicker.js', ({ mount, compileToFunctions }) => {
       }
     })
 
-    wrapper.find('.date-picker-years li.active + li')[0].trigger('click')
+    wrapper.find('.v-date-picker-years li.active + li')[0].trigger('click')
     expect(wrapper.vm.activePicker).toBe('MONTH')
     expect(wrapper.vm.tableDate).toBe('2004')
   })
@@ -201,7 +199,7 @@ test('VDatePicker.js', ({ mount, compileToFunctions }) => {
       }
     })
 
-    const icons = wrapper.find('.date-picker-header .icon')
+    const icons = wrapper.find('.v-date-picker-header .v-icon')
     expect(icons[0].element.textContent).toBe('block')
     expect(icons[1].element.textContent).toBe('check')
   })
